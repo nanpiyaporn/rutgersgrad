@@ -219,26 +219,45 @@
             
             // Simple text label (using canvas texture for course name)
             const canvas = document.createElement('canvas');
-            canvas.width = 256; canvas.height = 128;
+            // Larger canvas for crisper, bigger text
+            canvas.width = 512; canvas.height = 256;
             const ctx = canvas.getContext('2d');
-            ctx.fillStyle = "white";
-            ctx.fillRect(0,0,256,128);
-            ctx.fillStyle = "black";
-            ctx.font = "bold 40px Arial";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(courseData.id, 128, 64);
-            
+            // Rutgers red background with white text for strong contrast
+            ctx.fillStyle = '#cc0033';
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = 'white';
+            // Bigger font so the course number is prominent
+            ctx.font = 'bold 140px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(courseData.id, canvas.width/2, canvas.height/2);
+
             const tex = new THREE.CanvasTexture(canvas);
-            const labelGeo = new THREE.PlaneGeometry(1.4, 0.7);
-            const labelMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true });
-            const label1 = new THREE.Mesh(labelGeo, labelMat);
-            label1.position.z = 0.76;
-            mesh.add(label1);
-            const label2 = label1.clone();
-            label2.rotation.y = Math.PI;
-            label2.position.z = -0.76;
-            mesh.add(label2);
+            const labelGeo = new THREE.PlaneGeometry(1.8, 1.0);
+            const labelMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide });
+
+            // Front label
+            const labelFront = new THREE.Mesh(labelGeo, labelMat);
+            labelFront.position.z = 0.76;
+            mesh.add(labelFront);
+
+            // Back label (rotated)
+            const labelBack = new THREE.Mesh(labelGeo, labelMat);
+            labelBack.rotation.y = Math.PI;
+            labelBack.position.z = -0.76;
+            mesh.add(labelBack);
+
+            // Right label
+            const labelRight = new THREE.Mesh(labelGeo, labelMat);
+            labelRight.rotation.y = -Math.PI/2;
+            labelRight.position.x = 0.76;
+            mesh.add(labelRight);
+
+            // Left label
+            const labelLeft = new THREE.Mesh(labelGeo, labelMat);
+            labelLeft.rotation.y = Math.PI/2;
+            labelLeft.position.x = -0.76;
+            mesh.add(labelLeft);
 
             scene.add(mesh);
             collectibles.push(mesh);
