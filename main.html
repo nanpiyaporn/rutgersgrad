@@ -21,6 +21,11 @@
         .track-btn:hover { border-color: #cc0033; background: #404040; transform: translateY(-2px); }
         .track-btn.selected { background: #cc0033; border-color: #fff; font-weight: bold; }
 
+        .semester-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
+        .semester-btn { background: #333; border: 3px solid #555; color: white; padding: 20px 30px; cursor: pointer; border-radius: 8px; font-size: 18px; font-weight: bold; transition: all 0.3s; text-transform: uppercase; }
+        .semester-btn:hover { border-color: #cc0033; background: #404040; transform: translateY(-3px); }
+        .semester-btn.selected { background: #cc0033; border-color: #fff; box-shadow: 0 0 15px rgba(204,0,51,0.6); }
+
         #start-btn { background: #cc0033; color: white; border: none; padding: 15px 40px; font-size: 24px; cursor: pointer; border-radius: 50px; font-weight: bold; text-transform: uppercase; box-shadow: 0 0 20px rgba(204,0,51,0.4); }
         #start-btn:hover { background: #e6003a; transform: scale(1.05); }
 
@@ -49,6 +54,13 @@
             <p>Welcome, Graduate Student. Your goal is to obtain your M.S. degree.<br>
             Collect <strong>36 Credits</strong> (12 Courses) while fulfilling the requirements for your chosen track.</p>
             
+            <p style="margin-bottom: 15px; color: #aaa; font-size: 16px;">Select a semester:</p>
+            <div class="semester-grid">
+                <div class="semester-btn selected" data-semester="spring">Spring</div>
+                <div class="semester-btn" data-semester="fall">Fall</div>
+            </div>
+
+            <p style="margin-bottom: 15px; color: #aaa; font-size: 16px;">Select your track:</p>
             <div class="track-grid">
                 <div class="track-btn selected" data-track="general">General CS</div>
                 <div class="track-btn" data-track="aiml">AI / Machine Learning</div>
@@ -159,6 +171,7 @@
         ];
 
         let selectedTrack = "general";
+        let selectedSemester = "spring";
         const STARTING_MONEY = 40000;
         let state = {
             credits: 0,
@@ -337,6 +350,15 @@
         window.addEventListener('keyup', (e) => { keys[e.key] = false; });
 
         // Menu Logic
+        const semesterBtns = document.querySelectorAll('.semester-btn');
+        semesterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                semesterBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedSemester = btn.getAttribute('data-semester');
+            });
+        });
+
         const trackBtns = document.querySelectorAll('.track-btn');
         trackBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -349,6 +371,8 @@
         document.getElementById('start-btn').addEventListener('click', () => {
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('hud').style.display = 'block';
+            // Log the selected semester and track
+            console.log(`Starting ${selectedSemester.toUpperCase()} semester with ${TRACKS[selectedTrack].name} track`);
             updateHUD();
             animate();
         });
