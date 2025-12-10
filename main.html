@@ -32,6 +32,13 @@
         #restart-btn { background: #4caf50; color: white; border: none; padding: 15px 30px; font-size: 20px; cursor: pointer; border-radius: 5px; }
 
         /* Rutgers Red: #cc0033 */
+        /* Progress bar styles */
+        .progress-row { display:flex; align-items:center; gap:10px; margin-top:6px; }
+        .progress-label { width:90px; font-size:13px; color:#ddd; }
+        .progress-bar { flex:1; height:14px; background:rgba(255,255,255,0.08); border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.3); }
+        .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#4caf50,#2196f3); transition:width 300ms ease; }
+        .money-fill { background: linear-gradient(90deg,#fdd835,#ff9800); }
+        .percent-text { width:50px; text-align:right; font-size:13px; color:#fff; }
     </style>
 </head>
 <body>
@@ -57,6 +64,17 @@
         <div id="hud">
             <h2>Current Standing</h2>
             <div class="stat-row"><span>Credits:</span> <span id="credit-count">0 / 36</span></div>
+            <div class="stat-row"><span>Money:</span> <span id="money-count">$40,000</span></div>
+            <div class="progress-row">
+                <div class="progress-label">Money</div>
+                <div class="progress-bar"><div id="money-bar-fill" class="progress-fill money-fill"></div></div>
+                <div id="money-percent-text" class="percent-text">100%</div>
+            </div>
+            <div class="progress-row">
+                <div class="progress-label">Graduate</div>
+                <div class="progress-bar"><div id="grad-bar-fill" class="progress-fill"></div></div>
+                <div id="grad-percent-text" class="percent-text">0%</div>
+            </div>
             <div class="stat-row"><span>Category A:</span> <span id="cat-a-count">0 / 2</span></div>
             <div class="stat-row"><span>Category B:</span> <span id="cat-b-count">0 / 2</span></div>
             <div class="stat-row"><span>Track Core:</span> <span id="track-core-count">0 / 6</span></div>
@@ -69,6 +87,12 @@
             <h1>DEGREE EARNED!</h1>
             <p>Congratulations! You have satisfied all requirements.</p>
             <button id="restart-btn" onclick="location.reload()">Start New Degree</button>
+        </div>
+
+        <div id="game-over-screen" style="display:none; position: absolute; top: 0; left: 0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index:30; flex-direction: column; align-items: center; justify-content: center;">
+            <h1 style="color:#f44336; font-size:60px; margin-bottom:20px;">GAME OVER</h1>
+            <p style="font-size:24px; color:#ddd; margin-bottom:30px;">You've run out of money and cannot enroll in more courses.</p>
+            <button onclick="location.reload()" style="background:#f44336; color:white; border:none; padding:12px 24px; font-size:18px; border-radius:6px;">Restart</button>
         </div>
     </div>
 
@@ -135,13 +159,19 @@
         ];
 
         let selectedTrack = "general";
+        const STARTING_MONEY = 40000;
         let state = {
             credits: 0,
+            money: STARTING_MONEY,
             catA: 0,
             catB: 0,
             trackCore: 0,
             collected: []
         };
+
+        // Game constants
+        const COURSE_COST = 3000;
+        state.gameOver = false;
 
         // --- THREE.JS SETUP ---
         const scene = new THREE.Scene();
@@ -186,6 +216,38 @@
         player.position.y = 1;
         player.castShadow = true;
         scene.add(player);
+
+        // Add an 'R' logo on the player's chest using a canvas texture
+        (function addPlayerR() {
+            const rCanvas = document.createElement('canvas');
+            rCanvas.width = 256; rCanvas.height = 256;
+            const rCtx = rCanvas.getContext('2d');
+            rCtx.clearRect(0, 0, rCanvas.width, rCanvas.height);
+
+            // Draw white 'R' on transparent background so cube red shows behind it
+            rCtx.fillStyle = 'white';
+            // Big bold font for visibility
+            rCtx.font = 'bold 180px Arial';
+            rCtx.textAlign = 'center';
+            rCtx.textBaseline = 'middle';
+            rCtx.fillText('R', rCanvas.width / 2, rCanvas.height / 2 + 6);
+
+            const rTex = new THREE.CanvasTexture(rCanvas);
+            const rMat = new THREE.MeshBasicMaterial({ map: rTex, transparent: true, side: THREE.DoubleSide });
+            const rGeo = new THREE.PlaneGeometry(0.9, 1.2);
+
+            // Front chest label
+            const rLabel = new THREE.Mesh(rGeo, rMat);
+            rLabel.position.set(0, 1, 0.51);
+            rLabel.renderOrder = 999;
+            player.add(rLabel);
+
+            // Back label so 'R' shows from behind as well
+            const rLabelBack = rLabel.clone();
+            rLabelBack.rotation.y = Math.PI;
+            rLabelBack.position.set(0, 1, -0.51);
+            player.add(rLabelBack);
+        })();
 
         // Collectibles Group
         const collectibles = [];
@@ -301,6 +363,25 @@
 
         function updateHUD() {
             document.getElementById('credit-count').innerText = `${state.credits} / 36`;
+            // Format money with commas
+            const moneyEl = document.getElementById('money-count');
+            if (moneyEl) {
+                moneyEl.innerText = `$${state.money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+                moneyEl.className = state.money <= 0 ? 'invalid' : '';
+            }
+
+            // Update percent bars
+            const moneyPercent = Math.max(0, Math.round((state.money / (STARTING_MONEY || 1)) * 100));
+            const moneyFill = document.getElementById('money-bar-fill');
+            const moneyPctText = document.getElementById('money-percent-text');
+            if (moneyFill) moneyFill.style.width = `${moneyPercent}%`;
+            if (moneyPctText) moneyPctText.innerText = `${moneyPercent}%`;
+
+            const gradPercent = Math.min(100, Math.round((state.credits / 36) * 100));
+            const gradFill = document.getElementById('grad-bar-fill');
+            const gradPctText = document.getElementById('grad-percent-text');
+            if (gradFill) gradFill.style.width = `${gradPercent}%`;
+            if (gradPctText) gradPctText.innerText = `${gradPercent}%`;
             
             const catAEl = document.getElementById('cat-a-count');
             catAEl.innerText = `${state.catA} / 2`;
@@ -323,6 +404,13 @@
         }
 
         function collectCourse(mesh, index) {
+            if (state.gameOver) return;
+            // Check funds first
+            if (state.money < COURSE_COST) {
+                showMessage(`Not enough money to enroll!`, false);
+                triggerGameOver();
+                return;
+            }
             const data = mesh.userData;
             
             // Logic: Cannot retake course
@@ -332,6 +420,9 @@
             }
 
             state.collected.push(data.id);
+            // Charge for the course
+            state.money -= COURSE_COST;
+            if (state.money < 0) state.money = 0;
             state.credits += 3;
             
             if (data.cat === 'A') state.catA++;
@@ -356,6 +447,19 @@
             spawnCourse((Math.random()-0.5)*80, (Math.random()-0.5)*80);
 
             updateHUD();
+
+            // If money ran out exactly after purchase, game over
+            if (state.money <= 0) {
+                showMessage('You have no money left!', false);
+                triggerGameOver();
+            }
+        }
+
+        function triggerGameOver() {
+            if (state.gameOver) return;
+            state.gameOver = true;
+            const el = document.getElementById('game-over-screen');
+            if (el) el.style.display = 'flex';
         }
 
         // --- ANIMATION LOOP ---
@@ -364,6 +468,12 @@
         
         function animate() {
             requestAnimationFrame(animate);
+
+            // If game over, freeze game (no input or pickups)
+            if (state.gameOver) {
+                renderer.render(scene, camera);
+                return;
+            }
 
             // Player Movement
             if (keys['w'] || keys['ArrowUp']) player.position.z -= speed;
