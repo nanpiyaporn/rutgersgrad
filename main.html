@@ -734,7 +734,7 @@
 
             // Win Condition Check: 36 credits + all category requirements met
             if (state.credits >= 36 && state.catACore >= 2 && state.catBCore >= 2 && 
-                state.catABAdditional >= 4 && state.catABAdditionalStrict >= 2 && (state.essayCount >= 2 || state.thesisCount >= 2) && state.flexibleCourses >= 4) {
+                state.catABAdditionalStrict >= 2 && (state.essayCount >= 2 || state.thesisCount >= 2)) {
                 document.getElementById('win-screen').style.display = 'flex';
                 // Stop loop handled by logic
             }
@@ -784,7 +784,7 @@
             if (cat === 'A') {
                 if (state.catACore < 2) {
                     state.catACore++;
-                } else if (state.catABAdditional < 4) {
+                } else if (state.catABAdditionalStrict < 2) {
                     state.catABAdditional++;
                     state.catABAdditionalStrict++;
                 } else if (state.flexibleCourses < 4) {
@@ -793,7 +793,7 @@
             } else if (cat === 'B') {
                 if (state.catBCore < 2) {
                     state.catBCore++;
-                } else if (state.catABAdditional < 4) {
+                } else if (state.catABAdditionalStrict < 2) {
                     state.catABAdditional++;
                     state.catABAdditionalStrict++;
                 } else if (state.flexibleCourses < 4) {
@@ -801,22 +801,13 @@
                 }
             } else if (cat === 'essay') {
                 state.essayCount++;
-                // Essay can be used to satisfy up to 2 of the A/B additional slots
-                if (state.catABAdditional < 4 && state.essayThesisUsedForAB < 2) {
-                    state.catABAdditional++;
-                    state.essayThesisUsedForAB++;
-                } else if (state.flexibleCourses < 4) {
-                    state.flexibleCourses++;
-                }
+                // Essay counts toward its own requirement; if flexible slots remain, count there
+                if (state.flexibleCourses < 4) state.flexibleCourses++;
             } else if (cat === 'thesis') {
                 state.thesisCount++;
-                // Thesis can be used to satisfy up to 2 of the A/B additional slots
-                if (state.catABAdditional < 4 && state.essayThesisUsedForAB < 2) {
-                    state.catABAdditional++;
-                    state.essayThesisUsedForAB++;
-                } else if (state.flexibleCourses < 4) {
-                    state.flexibleCourses++;
-                }
+                // Thesis counts toward its own requirement; if flexible slots remain, count there
+                if (state.flexibleCourses < 4) state.flexibleCourses++;
+            
             } else {
                 // Flexible / other courses. Enforce independent-study limit (at most 2 of the 4)
                 if (INDEPENDENT_STUDY.includes(data.id)) {
