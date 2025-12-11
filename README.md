@@ -94,7 +94,7 @@ Seminars (671, 672), Independent Study (699), Approved Other Department courses 
 
 ## Author
 
-Piyaporn (pp227)
+Piyaporn (pp712)
 MS Computer Science, Rutgers University, Fall 2024 / Spring 2025
 
 ## License
