@@ -87,6 +87,9 @@ Seminars (671, 672), Independent Study (699), Approved Other Department courses 
 - `img/` – Screenshots and GIFs
 - `CS523_Piyaporn_pp227_FinalRUGame.pdf` – Final project documentation
 
+
+**[Play the Game Online](https://nanpiyaporn.github.io/rutgersgrad/)**
+
 ## Author
 
 Piyaporn (pp227)
