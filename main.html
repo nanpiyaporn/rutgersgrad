@@ -12,28 +12,28 @@
         .valid { color: #4caf50; font-weight: bold; }
         .invalid { color: #f44336; }
         
-        #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,10,10,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: auto; z-index: 10; }
-        #start-screen h1 { color: #cc0033; font-size: 48px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-        #start-screen p { font-size: 18px; max-width: 600px; text-align: center; color: #ddd; margin-bottom: 30px; }
+        #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,10,10,0.95); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 48px; pointer-events: auto; z-index: 10; }
+        #start-screen h1 { color: #cc0033; font-size: 42px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+        #start-screen p { font-size: 16px; max-width: 600px; text-align: center; color: #ddd; margin-bottom: 18px; }
         
-        .track-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
-        .track-btn { background: #333; border: 2px solid #555; color: white; padding: 15px; cursor: pointer; border-radius: 5px; font-size: 14px; transition: all 0.2s; text-align: center; }
+        .track-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+        .track-btn { background: #333; border: 2px solid #555; color: white; padding: 12px; cursor: pointer; border-radius: 5px; font-size: 13px; transition: all 0.15s; text-align: center; }
         .track-btn:hover { border-color: #cc0033; background: #404040; transform: translateY(-2px); }
         .track-btn.selected { background: #cc0033; border-color: #fff; font-weight: bold; }
 
-        .semester-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
-        .semester-btn { background: #333; border: 3px solid #555; color: white; padding: 20px 30px; cursor: pointer; border-radius: 8px; font-size: 18px; font-weight: bold; transition: all 0.3s; text-transform: uppercase; }
-        .semester-btn:hover { border-color: #cc0033; background: #404040; transform: translateY(-3px); }
-        .semester-btn.selected { background: #cc0033; border-color: #fff; box-shadow: 0 0 15px rgba(204,0,51,0.6); }
+        .semester-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
+        .semester-btn { background: #333; border: 3px solid #555; color: white; padding: 12px 20px; cursor: pointer; border-radius: 8px; font-size: 16px; font-weight: bold; transition: all 0.2s; text-transform: uppercase; }
+        .semester-btn:hover { border-color: #cc0033; background: #404040; transform: translateY(-2px); }
+        .semester-btn.selected { background: #cc0033; border-color: #fff; box-shadow: 0 0 12px rgba(204,0,51,0.55); }
 
         /* Degree option buttons (Essay / Thesis) */
-        .option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 18px; }
+        .option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
         .option-btn { background: #222; border: 2px solid #444; color: white; padding: 12px 18px; cursor: pointer; border-radius: 6px; font-size: 14px; transition: all 0.2s; text-transform: none; }
         .option-btn:hover { border-color: #cc0033; background: #333; transform: translateY(-2px); }
         .option-btn.selected { background: #cc0033; border-color: #fff; box-shadow: 0 0 10px rgba(204,0,51,0.45); }
 
-        #start-btn { background: #cc0033; color: white; border: none; padding: 15px 40px; font-size: 24px; cursor: pointer; border-radius: 50px; font-weight: bold; text-transform: uppercase; box-shadow: 0 0 20px rgba(204,0,51,0.4); }
-        #start-btn:hover { background: #e6003a; transform: scale(1.05); }
+        #start-btn { background: #cc0033; color: white; border: none; padding: 12px 34px; font-size: 22px; cursor: pointer; border-radius: 40px; font-weight: bold; text-transform: uppercase; box-shadow: 0 0 14px rgba(204,0,51,0.35); margin-bottom: 18px; }
+        #start-btn:hover { background: #e6003a; transform: scale(1.04); }
 
         #message-area { position: absolute; bottom: 100px; width: 100%; text-align: center; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 4px #000; pointer-events: none; transition: opacity 0.5s; opacity: 0; }
         
@@ -50,6 +50,13 @@
         .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,#4caf50,#2196f3); transition:width 300ms ease; }
         .money-fill { background: linear-gradient(90deg,#fdd835,#ff9800); }
         .percent-text { width:50px; text-align:right; font-size:13px; color:#fff; }
+        /* Semester tracker (per-semester boxes) */
+        .sem-tracker { margin-top:10px; display:flex; flex-direction:column; gap:8px; }
+        .sem-row { display:flex; align-items:flex-start; gap:8px; }
+        .sem-title { width:110px; color:#ddd; font-size:14px; }
+        .course-box { background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); padding:6px 8px; border-radius:6px; min-width:110px; text-align:center; font-size:12px; color:#fff; }
+        .course-id { font-weight:bold; color:#ffeb3b; display:block; }
+        .course-name { font-size:11px; color:#ddd; display:block; margin-top:4px; }
     </style>
 </head>
 <body>
@@ -89,6 +96,8 @@
             <h2>Current Standing</h2>
             <div class="stat-row"><span>Credits:</span> <span id="credit-count">0 / 36</span></div>
             <div class="stat-row"><span>Money:</span> <span id="money-count">$40,000</span></div>
+            <div class="stat-row"><span>Semester:</span> <span id="semester-display">-</span></div>
+            <div class="stat-row"><span>Courses This Sem:</span> <span id="picks-count">0 / 3</span></div>
             <div class="progress-row">
                 <div class="progress-label">Money</div>
                 <div class="progress-bar"><div id="money-bar-fill" class="progress-fill money-fill"></div></div>
@@ -103,6 +112,9 @@
             <div class="stat-row"><span>Category B:</span> <span id="cat-b-count">0 / 2</span></div>
             <div class="stat-row"><span>Track Core:</span> <span id="track-core-count">0 / 6</span></div>
             <div class="stat-row" style="margin-top:10px; font-size:14px; color:#aaa;">Last Action: <span id="last-action">-</span></div>
+            <div id="semester-tracker" class="sem-tracker">
+                <!-- Filled dynamically with per-semester rows -->
+            </div>
         </div>
 
         <div id="message-area">Course Collected!</div>
@@ -182,6 +194,117 @@
             { id: "671", name: "Seminar", cat: "E" }
         ];
 
+        // Semester availability lists (IDs)
+         const SPRING_COURSES = ["509","512","513","514","519","520","523","526","527","530","533","534","535","536","538","545","550","552","553","558","562","580","590","602","605","644","660","664","670","671","684","699","702","705","800","811","844","855","866","867","877","878"];
+         const FALL_COURSES = ["505","508","512","513","515","518","520","523","525","527","529","530","535","550","560","580","596","598","599","601","603","604","609","643","660","664","671","672","701","704","800","811","844","855","866","867","877","878"];
+
+         // Course name mapping
+         const COURSE_NAMES = {
+             "501": "MATH FOUNDATIONS OF DATA SCIENCE",
+             "505": "COMPUTER STRUCTURES",
+             "508": "FORMAL LANG & AUTOMATA",
+             "509": "FDTNS COM SCI",
+             "512": "INTRO DSA",
+             "513": "DESIGN AND ANALYSIS DSA",
+             "514": "DSGN & ANL DS&ALGOR II",
+             "515": "PROGRAMMING LANGUAGES AND COMPILERS I",
+             "518": "OPERATING SYSTEMS DESIGN",
+             "519": "OPERATING SYSTEM THEORY",
+             "520": "INTRO TO ARTIF INTEL",
+             "523": "COMPUTER GRAPHICS",
+             "525": "BRAIN INSPIRED COMPUTING",
+             "526": "DATA INTERACTION AND VISUAL ANALYTICS",
+             "527": "DATABASE SYSTEMS FOR DATA SCIENCE",
+             "529": "COMPUTATN AL GEOMETRY",
+             "530": "PRINCIPLES OF ARTIFICIAL INTELLIGENCE",
+             "533": "NATURAL LANGUAGE",
+             "534": "COMPUTER VISION",
+             "535": "MACHINE LEARNING I",
+             "536": "MACHINE LEARNING II",
+             "538": "COMPLEXITY COMPUTATN",
+             "545": "DISTRIBUTED SYSTEMS",
+             "550": "MASSIVE DATA MINING",
+             "552": "COMPUTER NETWORKS",
+             "553": "DESIGN OF INTERNET SERVICES",
+             "558": "QUANT COMP PRO/SYST",
+             "560": "INTRO COMPUTATIONAL ROBOTICS",
+             "562": "ADVANCED ROBOTICS",
+             "580": "TOPICS IN COMPUTERS IN BIOMEDICINE",
+             "590": "SOCIALLY COGNIZANT ROBOTICS",
+             "596": "TOPICS IN THE FOUNDATIONS OF COMPUTER SCIENCE",
+             "598": "TOPICS IN A I",
+             "599": "DESIGN SOC COG ROBOT",
+             "601": "ESSAY",
+             "602": "ESSAY",
+             "603": "BUSINESS DATA MANAGEMENT",
+             "604": "ESSAY",
+             "605": "ESSAY",
+             "609": "INFO TECH FOR MGRS",
+             "643": "INFORMATION SECURITY",
+             "644": "DATA MINING",
+             "660": "BUSINESS ANALYTICS PROGRAMMING",
+             "664": "BUSINESS APPLICATION IN MACHINE LEARNING",
+             "670": "INFORMATION TECHNOLOGY STRATEGY",
+             "671": "SEMINAR COMPUTER SCIENCE",
+             "672": "SEMINAR COMPUTER SCI",
+             "684": "SPECIAL TOPICS INFORMATION SYSTEMS",
+             "699": "NON-THESIS STUDY",
+             "701": "THESIS",
+             "702": "THESIS",
+             "704": "THESIS",
+             "705": "THESIS",
+             "800": "MATRICULATION CONTINUED",
+             "811": "GRADUATE FELLOWSHIP",
+             "844": "RESEARCH INTERNSHIP",
+             "855": "GRADUATE TRAINEESHIP",
+             "866": "GRADUATE ASSISTANTSHIP",
+             "867": "PART GA APPOINTMENT",
+             "877": "TEACHING ASSISTANTSHIP",
+             "878": "PART TA APPOINTMENT"
+         };
+
+         // Prerequisite mapping. Each key maps to an array of option-sets.
+        // Each option-set is an array of course IDs that must ALL be taken (AND).
+        // Multiple option-sets represent OR between them.
+        const PREREQS = {
+            // 512 before 513
+            "513": [["512"]],
+            // 513 before 514
+            "514": [["513"]],
+            // 519 before 545
+            "545": [["519"]],
+            // 534,535,536 require 530 OR 520
+            "534": [["530"],["520"]],
+            "535": [["530"],["520"]],
+            "536": [["530"],["520"]]
+        };
+
+        function hasPrereqs(courseId) {
+            const req = PREREQS[courseId];
+            if (!req) return true; // no prereqs
+            // req is array of option-sets. Return true if any option-set fully satisfied
+            for (let optionSet of req) {
+                let ok = true;
+                for (let need of optionSet) {
+                    if (!state.collected.includes(need)) { ok = false; break; }
+                }
+                if (ok) return true;
+            }
+            return false;
+        }
+
+        function prereqMessage(courseId) {
+            const req = PREREQS[courseId];
+            if (!req) return '';
+            // If single optionSet with single element -> simple message
+            if (req.length === 1 && req[0].length === 1) {
+                return `You must take CS ${req[0][0]} before CS ${courseId}.`;
+            }
+            // Otherwise build OR message
+            const orParts = req.map(set => set.join(' & '));
+            return `Prerequisite: ${orParts.join(' or ')} required before CS ${courseId}.`;
+        }
+
         let selectedTrack = "general";
         let selectedSemester = "spring";
         let selectedDegreeOption = "essay"; // 'essay' or 'thesis'
@@ -192,7 +315,8 @@
             catA: 0,
             catB: 0,
             trackCore: 0,
-            collected: []
+            collected: [],
+            semesterCourses: [] // array of arrays: courses picked per semester
         };
 
         // Game constants
@@ -279,8 +403,20 @@
         const collectibles = [];
         
         function spawnCourse(x, z) {
-            // Pick random course
-            const courseData = COURSES[Math.floor(Math.random() * COURSES.length)];
+            // Pick a course appropriate for the current semester when available
+            let courseData;
+            try {
+                const allowed = (state.currentSemester === 'spring') ? SPRING_COURSES : (state.currentSemester === 'fall') ? FALL_COURSES : null;
+                if (allowed && allowed.length > 0) {
+                    const id = allowed[Math.floor(Math.random() * allowed.length)];
+                    const fullName = COURSE_NAMES[id] || `CS ${id}`;
+                    courseData = COURSES.find(c => c.id === id) || { id: id, name: fullName, cat: 'E' };
+                } else {
+                    courseData = COURSES[Math.floor(Math.random() * COURSES.length)];
+                }
+            } catch (e) {
+                courseData = COURSES[Math.floor(Math.random() * COURSES.length)];
+            }
             
             // Geometry
             const geo = new THREE.BoxGeometry(1.5, 1.5, 1.5);
@@ -351,9 +487,18 @@
             collectibles.push(mesh);
         }
 
-        // Spawn initial courses
-        for(let i=0; i<30; i++) {
-            spawnCourse((Math.random()-0.5)*80, (Math.random()-0.5)*80);
+        // Refresh all spawned courses to match current semester
+        function refreshSpawnedCourses() {
+            // remove old
+            for (let i = collectibles.length - 1; i >= 0; i--) {
+                const m = collectibles[i];
+                scene.remove(m);
+                collectibles.splice(i, 1);
+            }
+            // spawn new set for the current semester
+            for (let i = 0; i < 30; i++) {
+                spawnCourse((Math.random() - 0.5) * 80, (Math.random() - 0.5) * 80);
+            }
         }
 
         // --- GAMEPLAY LOGIC ---
@@ -394,8 +539,16 @@
         document.getElementById('start-btn').addEventListener('click', () => {
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('hud').style.display = 'block';
+            // Initialize semester state
+            state.currentSemester = selectedSemester; // 'spring' or 'fall'
+            state.picksThisSemester = 0; // courses picked this semester
+            state.semestersElapsed = 1; // starting semester counts as 1
+            // initialize semesterCourses with first empty semester
+            state.semesterCourses = [[]];
             // Log the selected semester, degree option and track
             console.log(`Starting ${selectedSemester.toUpperCase()} semester, ${selectedDegreeOption.toUpperCase()} option, track: ${TRACKS[selectedTrack].name}`);
+            // Spawn courses appropriate for starting semester
+            refreshSpawnedCourses();
             updateHUD();
             animate();
         });
@@ -429,6 +582,60 @@
             const gradPctText = document.getElementById('grad-percent-text');
             if (gradFill) gradFill.style.width = `${gradPercent}%`;
             if (gradPctText) gradPctText.innerText = `${gradPercent}%`;
+            // Semester display
+            const semEl = document.getElementById('semester-display');
+            if (semEl) {
+                if (state.currentSemester) {
+                    semEl.innerText = `${state.currentSemester.charAt(0).toUpperCase() + state.currentSemester.slice(1)} ${state.semestersElapsed || 0}`;
+                } else {
+                    semEl.innerText = '-';
+                }
+            }
+            const picksEl = document.getElementById('picks-count');
+            if (picksEl) picksEl.innerText = `${state.picksThisSemester || 0} / 3`;
+            // Render semester tracker
+            const tracker = document.getElementById('semester-tracker');
+            if (tracker) {
+                tracker.innerHTML = '';
+                const rows = state.semesterCourses || [];
+                for (let i = 0; i < rows.length; i++) {
+                    const semName = (i % 2 === 0) ? 'Spring' : 'Fall';
+                    const rowDiv = document.createElement('div');
+                    rowDiv.className = 'sem-row';
+
+                    const title = document.createElement('div');
+                    title.className = 'sem-title';
+                    title.innerText = `${semName} ${i+1}`;
+                    rowDiv.appendChild(title);
+
+                    const boxesContainer = document.createElement('div');
+                    boxesContainer.style.display = 'flex';
+                    boxesContainer.style.gap = '6px';
+
+                    const semesterCourses = rows[i] || [];
+                    // show up to 3 boxes; if fewer, show empty placeholders
+                    for (let j = 0; j < 3; j++) {
+                        const box = document.createElement('div');
+                        box.className = 'course-box';
+                        if (semesterCourses[j]) {
+                            const idSpan = document.createElement('span');
+                            idSpan.className = 'course-id';
+                            idSpan.innerText = semesterCourses[j].id;
+                            const nameSpan = document.createElement('span');
+                            nameSpan.className = 'course-name';
+                            nameSpan.innerText = semesterCourses[j].name;
+                            box.appendChild(idSpan);
+                            box.appendChild(nameSpan);
+                        } else {
+                            box.innerHTML = '<span style="opacity:0.35;">(empty)</span>';
+                        }
+                        boxesContainer.appendChild(box);
+                    }
+
+                    rowDiv.appendChild(boxesContainer);
+                    tracker.appendChild(rowDiv);
+                }
+            }
             
             const catAEl = document.getElementById('cat-a-count');
             catAEl.innerText = `${state.catA} / 2`;
@@ -459,6 +666,11 @@
                 return;
             }
             const data = mesh.userData;
+            // Enforce prerequisites
+            if (!hasPrereqs(data.id)) {
+                showMessage(prereqMessage(data.id), false);
+                return;
+            }
             
             // Logic: Cannot retake course
             if (state.collected.includes(data.id)) {
@@ -467,6 +679,12 @@
             }
 
             state.collected.push(data.id);
+            // Record this course under the current semester's list
+            const semIndex = (state.semestersElapsed || 1) - 1;
+            if (!state.semesterCourses) state.semesterCourses = [];
+            if (!state.semesterCourses[semIndex]) state.semesterCourses[semIndex] = [];
+            const fullName = COURSE_NAMES[data.id] || data.name || `CS ${data.id}`;
+            state.semesterCourses[semIndex].push({ id: data.id, name: fullName });
             // Charge for the course
             state.money -= COURSE_COST;
             if (state.money < 0) state.money = 0;
@@ -492,6 +710,8 @@
             
             // Spawn a new one to keep field populated
             spawnCourse((Math.random()-0.5)*80, (Math.random()-0.5)*80);
+            // Track picks for current semester and advance when needed
+            state.picksThisSemester = (state.picksThisSemester || 0) + 1;
 
             updateHUD();
 
@@ -500,6 +720,11 @@
                 showMessage('You have no money left!', false);
                 triggerGameOver();
             }
+
+            if (state.picksThisSemester >= 3) {
+                // Advance to next semester
+                advanceSemester();
+            }
         }
 
         function triggerGameOver() {
@@ -507,6 +732,23 @@
             state.gameOver = true;
             const el = document.getElementById('game-over-screen');
             if (el) el.style.display = 'flex';
+        }
+
+        function advanceSemester() {
+            // increase semester count and switch term
+            state.semestersElapsed = (state.semestersElapsed || 1) + 1;
+            if (state.semestersElapsed > 10) {
+                showMessage('Maximum semesters reached!', false);
+                triggerGameOver();
+                return;
+            }
+            // toggle semester
+            state.currentSemester = (state.currentSemester === 'spring') ? 'fall' : 'spring';
+            state.picksThisSemester = 0;
+            // refresh available courses for the new semester
+            refreshSpawnedCourses();
+            updateHUD();
+            showMessage(`Now ${state.currentSemester.toUpperCase()} semester`, true);
         }
 
         // --- ANIMATION LOOP ---
