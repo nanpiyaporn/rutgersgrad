@@ -6,9 +6,9 @@
     <style>
         body { margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #202020; color: white; }
         #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-        #hud { position: absolute; top: 20px; left: 20px; font-size: 16px; background: rgba(0,0,0,0.7); padding: 15px; border-radius: 8px; border: 2px solid #cc0033; display: none; }
+        #hud { position: absolute; top: 20px; left: 20px; font-size: 16px; background: rgba(0,0,0,0.7); padding: 15px; border-radius: 8px; border: 2px solid #cc0033; display: none; width: 25vw; max-width: 420px; overflow: auto; box-sizing: border-box; }
         #hud h2 { margin: 0 0 10px 0; color: #cc0033; text-shadow: 1px 1px 0 #fff; }
-        .stat-row { display: flex; justify-content: space-between; min-width: 250px; margin-bottom: 5px; }
+        .stat-row { display: flex; justify-content: space-between; min-width: 0; margin-bottom: 5px; }
         .valid { color: #4caf50; font-weight: bold; }
         .invalid { color: #f44336; }
         
@@ -53,8 +53,8 @@
         /* Semester tracker (per-semester boxes) */
         .sem-tracker { margin-top:10px; display:flex; flex-direction:column; gap:8px; }
         .sem-row { display:flex; align-items:flex-start; gap:8px; }
-        .sem-title { width:110px; color:#ddd; font-size:14px; }
-        .course-box { background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); padding:6px 8px; border-radius:6px; min-width:110px; text-align:center; font-size:12px; color:#fff; }
+        .sem-title { width:80px; color:#ddd; font-size:14px; }
+        .course-box { background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); padding:6px 8px; border-radius:6px; min-width:80px; text-align:center; font-size:12px; color:#fff; }
         .course-id { font-weight:bold; color:#ffeb3b; display:block; }
         .course-name { font-size:9px; color:#ddd; display:block; margin-top:2px; }
     </style>
