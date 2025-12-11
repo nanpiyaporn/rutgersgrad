@@ -26,6 +26,12 @@
         .semester-btn:hover { border-color: #cc0033; background: #404040; transform: translateY(-3px); }
         .semester-btn.selected { background: #cc0033; border-color: #fff; box-shadow: 0 0 15px rgba(204,0,51,0.6); }
 
+        /* Degree option buttons (Essay / Thesis) */
+        .option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 18px; }
+        .option-btn { background: #222; border: 2px solid #444; color: white; padding: 12px 18px; cursor: pointer; border-radius: 6px; font-size: 14px; transition: all 0.2s; text-transform: none; }
+        .option-btn:hover { border-color: #cc0033; background: #333; transform: translateY(-2px); }
+        .option-btn.selected { background: #cc0033; border-color: #fff; box-shadow: 0 0 10px rgba(204,0,51,0.45); }
+
         #start-btn { background: #cc0033; color: white; border: none; padding: 15px 40px; font-size: 24px; cursor: pointer; border-radius: 50px; font-weight: bold; text-transform: uppercase; box-shadow: 0 0 20px rgba(204,0,51,0.4); }
         #start-btn:hover { background: #e6003a; transform: scale(1.05); }
 
@@ -60,7 +66,13 @@
                 <div class="semester-btn" data-semester="fall">Fall</div>
             </div>
 
-            <p style="margin-bottom: 15px; color: #aaa; font-size: 16px;">Select your track:</p>
+            <p style="margin-bottom: 8px; color: #aaa; font-size: 16px;">Select degree option:</p>
+            <div class="option-grid">
+                <div class="option-btn selected" data-option="essay">Essay Option</div>
+                <div class="option-btn" data-option="thesis">Thesis Option</div>
+            </div>
+
+            <p style="margin-top: 6px; margin-bottom: 15px; color: #aaa; font-size: 16px;">Select your track:</p>
             <div class="track-grid">
                 <div class="track-btn selected" data-track="general">General CS</div>
                 <div class="track-btn" data-track="aiml">AI / Machine Learning</div>
@@ -172,6 +184,7 @@
 
         let selectedTrack = "general";
         let selectedSemester = "spring";
+        let selectedDegreeOption = "essay"; // 'essay' or 'thesis'
         const STARTING_MONEY = 40000;
         let state = {
             credits: 0,
@@ -359,6 +372,16 @@
             });
         });
 
+        // Degree option buttons (Essay / Thesis)
+        const degreeBtns = document.querySelectorAll('.option-btn');
+        degreeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                degreeBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedDegreeOption = btn.getAttribute('data-option');
+            });
+        });
+
         const trackBtns = document.querySelectorAll('.track-btn');
         trackBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -371,8 +394,8 @@
         document.getElementById('start-btn').addEventListener('click', () => {
             document.getElementById('start-screen').style.display = 'none';
             document.getElementById('hud').style.display = 'block';
-            // Log the selected semester and track
-            console.log(`Starting ${selectedSemester.toUpperCase()} semester with ${TRACKS[selectedTrack].name} track`);
+            // Log the selected semester, degree option and track
+            console.log(`Starting ${selectedSemester.toUpperCase()} semester, ${selectedDegreeOption.toUpperCase()} option, track: ${TRACKS[selectedTrack].name}`);
             updateHUD();
             animate();
         });
