@@ -57,6 +57,8 @@ This project is an educational gamification tool designed to help incoming Rutge
 9. **Progress:** Monitor your degree requirements on the HUD (left panel)
 10. **Win:** Satisfy all requirements and reach 36 credits (12 courses) to graduate!
 
+**[Play the Game Online](https://nanpiyaporn.github.io/rutgersgrad/)**
+
 ## Technical Stack
 
 - **3D Rendering:** Three.js (r128)
@@ -88,7 +90,7 @@ Seminars (671, 672), Independent Study (699), Approved Other Department courses 
 - `CS523_Piyaporn_pp227_FinalRUGame.pdf` – Final project documentation
 
 
-**[Play the Game Online](https://nanpiyaporn.github.io/rutgersgrad/)**
+
 
 ## Author
 
