@@ -707,8 +707,8 @@
 
             const catABEl = document.getElementById('cat-ab-add-count');
             if (catABEl) {
-                catABEl.innerText = `${state.catABAdditional} / 4`;
-                catABEl.className = (state.catABAdditional >= 4 && state.catABAdditionalStrict >= 2) ? 'valid' : '';
+                catABEl.innerText = `${state.catABAdditionalStrict} / 2`;
+                catABEl.className = state.catABAdditionalStrict >= 2 ? 'valid' : '';
             }
 
             const essayEl = document.getElementById('essay-count');
