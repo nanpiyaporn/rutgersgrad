@@ -56,16 +56,15 @@
         .sem-title { width:110px; color:#ddd; font-size:14px; }
         .course-box { background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); padding:6px 8px; border-radius:6px; min-width:110px; text-align:center; font-size:12px; color:#fff; }
         .course-id { font-weight:bold; color:#ffeb3b; display:block; }
-        .course-name { font-size:11px; color:#ddd; display:block; margin-top:4px; }
+        .course-name { font-size:9px; color:#ddd; display:block; margin-top:2px; }
     </style>
 </head>
 <body>
 
     <div id="ui-layer">
         <div id="start-screen">
-            <h1>Rutgers MS Pursuit</h1>
-            <p>Welcome, Graduate Student. Your goal is to obtain your M.S. degree.<br>
-            Collect <strong>36 Credits</strong> (12 Courses) while fulfilling the requirements for your chosen track.</p>
+            <h1>Rutgers MS Computer Science Pursuit</h1>
+            <p>Welcome, Graduate Student. Your goal is to obtain your M.S. Computer Science degree. Collect <strong>36 Credits</strong> (12 Courses) while fulfilling the requirements for your chosen track.</p>
             
             <p style="margin-bottom: 15px; color: #aaa; font-size: 16px;">Select a semester:</p>
             <div class="semester-grid">
@@ -93,7 +92,7 @@
         </div>
 
         <div id="hud">
-            <h2>Current Standing</h2>
+            <h2>Current Standing <span style="font-size:14px; cursor:help;" title="Collect courses to earn credits and complete your degree requirements.">ℹ️</span></h2>
             <div class="stat-row"><span>Credits:</span> <span id="credit-count">0 / 36</span></div>
             <div class="stat-row"><span>Money:</span> <span id="money-count">$40,000</span></div>
             <div class="stat-row"><span>Semester:</span> <span id="semester-display">-</span></div>
@@ -111,7 +110,8 @@
             <div class="stat-row"><span>Category A:</span> <span id="cat-a-count">0 / 2</span></div>
             <div class="stat-row"><span>Category B:</span> <span id="cat-b-count">0 / 2</span></div>
             <div class="stat-row"><span>A/B Additional:</span> <span id="cat-ab-add-count">0 / 4</span></div>
-            <div class="stat-row"><span>Essay/Thesis:</span> <span id="essay-thesis-count">0 / 2</span></div>
+            <div class="stat-row"><span>Essay:</span> <span id="essay-count">0 / 2</span></div>
+            <div class="stat-row"><span>Thesis:</span> <span id="thesis-count">0 / 2</span></div>
             <div class="stat-row"><span>Flexible:</span> <span id="flex-count">0 / 4</span></div>
             <div class="stat-row"><span>Track Core:</span> <span id="track-core-count">0 / 6</span></div>
             <div class="stat-row" style="margin-top:10px; font-size:14px; color:#aaa;">Last Action: <span id="last-action">-</span></div>
@@ -128,7 +128,7 @@
             <button id="restart-btn" onclick="location.reload()">Start New Degree</button>
         </div>
 
-        <div id="game-over-screen" style="display:none; position: absolute; top: 0; left: 0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index:30; flex-direction: column; align-items: center; justify-content: center;">
+        <div id="game-over-screen" style="display:none; position: absolute; top: 0; left: 0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index:30; flex-direction: column; align-items: center; justify-content: center; pointer-events: auto;">
             <h1 style="color:#f44336; font-size:60px; margin-bottom:20px;">GAME OVER</h1>
             <p style="font-size:24px; color:#ddd; margin-bottom:30px;">You've run out of money and cannot enroll in more courses.</p>
             <button onclick="location.reload()" style="background:#f44336; color:white; border:none; padding:12px 24px; font-size:18px; border-radius:6px;">Restart</button>
@@ -194,32 +194,33 @@
             { id: "534", name: "Vision", cat: "B" },
             // Electives (Generic)
             { id: "601", name: "Ind. Study", cat: "E" },
-            { id: "671", name: "Seminar", cat: "E" }
+            { id: "671", name: "Seminar", cat: "E" },
+            { id: "XXX", name: "Approved Other Dept Course", cat: "E" }
         ];
 
-        // Semester availability lists (IDs)
-         const SPRING_COURSES = ["509","512","513","514","519","520","523","526","527","530","533","534","535","536","538","545","550","552","553","558","562","580","590","602","605","644","660","664","670","671","684","699","702","705","800","811","844","855","866","867","877","878"];
-         const FALL_COURSES = ["505","508","512","513","515","518","520","523","525","527","529","530","535","550","560","580","596","598","599","601","603","604","609","643","660","664","671","672","701","704","800","811","844","855","866","867","877","878"];
+        // Semester availability lists (IDs) " I took all 800-level courses out!"
+         const SPRING_COURSES = ["509","512","513","514","519","520","523","526","527","530","533","534","535","536","538","545","550","552","553","558","562","580","590","602","605","660","670","671","684","699","702","705"];
+         const FALL_COURSES = ["505","508","512","513","515","518","520","523","525","527","529","530","535","550","560","580","596","598","599","601","604","660","664","671","672","701","704"];
 
          // Course name mapping
          const COURSE_NAMES = {
-             "501": "MATH FOUNDATIONS OF DATA SCIENCE",
+             "501": "MATH FOUND OF DS",
              "505": "COMPUTER STRUCTURES",
              "508": "FORMAL LANG & AUTOMATA",
              "509": "FDTNS COM SCI",
              "512": "INTRO DSA",
              "513": "DESIGN AND ANALYSIS DSA",
              "514": "DSGN & ANL DS&ALGOR II",
-             "515": "PROGRAMMING LANGUAGES AND COMPILERS I",
+             "515": "PROG LANG AND COMPILERS I",
              "518": "OPERATING SYSTEMS DESIGN",
              "519": "OPERATING SYSTEM THEORY",
              "520": "INTRO TO ARTIF INTEL",
              "523": "COMPUTER GRAPHICS",
              "525": "BRAIN INSPIRED COMPUTING",
-             "526": "DATA INTERACTION AND VISUAL ANALYTICS",
-             "527": "DATABASE SYSTEMS FOR DATA SCIENCE",
+             "526": "DATA INTERACTION & VISUAL",
+             "527": "DATABASE SYSTEMS FOR DS",
              "529": "COMPUTATN AL GEOMETRY",
-             "530": "PRINCIPLES OF ARTIFICIAL INTELLIGENCE",
+             "530": "PRINCIPLES OF AI",
              "533": "NATURAL LANGUAGE",
              "534": "COMPUTER VISION",
              "535": "MACHINE LEARNING I",
@@ -232,38 +233,39 @@
              "558": "QUANT COMP PRO/SYST",
              "560": "INTRO COMPUTATIONAL ROBOTICS",
              "562": "ADVANCED ROBOTICS",
-             "580": "TOPICS IN COMPUTERS IN BIOMEDICINE",
+             "580": "TOPICS IN COM IN BIO",
              "590": "SOCIALLY COGNIZANT ROBOTICS",
-             "596": "TOPICS IN THE FOUNDATIONS OF COMPUTER SCIENCE",
+             "596": "TOPICS IN CS",
              "598": "TOPICS IN A I",
              "599": "DESIGN SOC COG ROBOT",
              "601": "ESSAY",
              "602": "ESSAY",
-             "603": "BUSINESS DATA MANAGEMENT",
+             //"603": "BUSINESS DATA MANAGEMENT",
              "604": "ESSAY",
              "605": "ESSAY",
-             "609": "INFO TECH FOR MGRS",
-             "643": "INFORMATION SECURITY",
-             "644": "DATA MINING",
-             "660": "BUSINESS ANALYTICS PROGRAMMING",
-             "664": "BUSINESS APPLICATION IN MACHINE LEARNING",
-             "670": "INFORMATION TECHNOLOGY STRATEGY",
-             "671": "SEMINAR COMPUTER SCIENCE",
-             "672": "SEMINAR COMPUTER SCI",
-             "684": "SPECIAL TOPICS INFORMATION SYSTEMS",
+             //"609": "INFO TECH FOR MGRS", 22:198:609
+             //"643": "INFORMATION SECURITY",
+             //"644": "DATA MINING",
+             //"660": "BUSINESS ANALYTICS PROGRAMMING",
+             //"664": "BUSINESS APPLICATION IN MACHINE LEARNING",
+             "670": "INFORMATION TECH STRATEGY",
+             "671": "SEMINAR CS",
+             "672": "SEMINAR CS",
+             //"684": "SPECIAL TOPICS IS", 26:198:684
              "699": "NON-THESIS STUDY",
+             "XXX": "APPROVED OTHER DEPARTMENT COURSE",
              "701": "THESIS",
              "702": "THESIS",
              "704": "THESIS",
              "705": "THESIS",
-             "800": "MATRICULATION CONTINUED",
-             "811": "GRADUATE FELLOWSHIP",
-             "844": "RESEARCH INTERNSHIP",
-             "855": "GRADUATE TRAINEESHIP",
-             "866": "GRADUATE ASSISTANTSHIP",
-             "867": "PART GA APPOINTMENT",
-             "877": "TEACHING ASSISTANTSHIP",
-             "878": "PART TA APPOINTMENT"
+             //"800": "MATRICULATION CONTINUED",
+             //"811": "GRADUATE FELLOWSHIP",
+             //"844": "RESEARCH INTERNSHIP",
+             //"855": "GRADUATE TRAINEESHIP",
+             //"866": "GRADUATE ASSISTANTSHIP",
+             //"867": "PART GA APPOINTMENT",
+             //"877": "TEACHING ASSISTANTSHIP",
+             //"878": "PART TA APPOINTMENT"
          };
 
          // Prerequisite mapping. Each key maps to an array of option-sets.
@@ -310,7 +312,10 @@
 
         // Course category helpers
         const ESSAY_COURSES = ["601", "602", "604", "605"];
-        const THESIS_COURSES = ["704", "705", "706"];
+        // Include thesis course IDs that should be restricted when Essay option is chosen
+        const THESIS_COURSES = ["701", "702", "704", "705"];
+        // Independent study courses that count toward the 4 flexible MSCS-acceptable courses
+        const INDEPENDENT_STUDY = ["699"];
         const CAT_A_COURSES = ["501", "509", "512", "513", "514", "581"];
         const CAT_B_COURSES = ["507", "515", "518", "519", "520", "523", "525", "526", "527", "529", "530", "534", "535", "536", "538", "545", "550", "552", "553", "558", "560", "562"];
 
@@ -336,9 +341,15 @@
             semesterCourses: [], // array of arrays: courses picked per semester
             catACore: 0, // min 2
             catBCore: 0, // min 2
-            catABAdditional: 0, // min 4 (from A or B)
-            essayThesisCourses: 0, // essay/thesis courses picked (max 2 in first sem)
-            flexibleCourses: 0, // other courses (max 4)
+            // Additional A/B courses: total and how many are strict A/B (not essay/thesis)
+            catABAdditional: 0, // total additional A/B (track how many A/B beyond cores)
+            catABAdditionalStrict: 0, // of the above, how many are strict A/B courses (need >=2)
+            // Track how many essay/thesis courses have been used to satisfy the additional A/B slots (max 2)
+            essayThesisUsedForAB: 0,
+            essayCount: 0, // essay courses picked
+            thesisCount: 0, // thesis courses picked
+            flexibleCourses: 0, // other courses acceptable for MSCS credit (need 4)
+            independentStudyCount: 0, // at most 2 of the 4 flexible may be independent study
             essayThesisCompleted: false // whether essay or thesis requirement met
         };
 
@@ -428,14 +439,38 @@
         function spawnCourse(x, z) {
             // Pick a course appropriate for the current semester when available
             let courseData;
+            // Small chance to spawn an 'Approved Other Dept' box (XXX)
+            if (Math.random() < 0.08) {
+                courseData = { id: 'XXX', name: COURSE_NAMES['XXX'] || 'Approved Other Dept Course', cat: 'E' };
+            }
             try {
                 const allowed = (state.currentSemester === 'spring') ? SPRING_COURSES : (state.currentSemester === 'fall') ? FALL_COURSES : null;
-                if (allowed && allowed.length > 0) {
-                    const id = allowed[Math.floor(Math.random() * allowed.length)];
+                let pool = allowed && allowed.length > 0 ? allowed.slice() : null;
+                // Filter out courses not allowed by selected degree option
+                if (pool) {
+                    pool = pool.filter(id => {
+                        if (selectedDegreeOption === 'thesis' && ESSAY_COURSES.includes(id)) return false;
+                        if (selectedDegreeOption === 'essay' && THESIS_COURSES.includes(id)) return false;
+                        return true;
+                    });
+                    // fallback to original allowed list if filtering removes everything
+                    if (pool.length === 0) pool = allowed.slice();
+                }
+
+                if (pool && pool.length > 0) {
+                    const id = pool[Math.floor(Math.random() * pool.length)];
                     const fullName = COURSE_NAMES[id] || `CS ${id}`;
                     courseData = COURSES.find(c => c.id === id) || { id: id, name: fullName, cat: 'E' };
                 } else {
-                    courseData = COURSES[Math.floor(Math.random() * COURSES.length)];
+                    // fallback: random from all courses but still respect degree option
+                    const globalPool = COURSES.map(c => c.id).filter(id => {
+                        if (selectedDegreeOption === 'thesis' && ESSAY_COURSES.includes(id)) return false;
+                        if (selectedDegreeOption === 'essay' && THESIS_COURSES.includes(id)) return false;
+                        return true;
+                    });
+                    const randId = globalPool.length ? globalPool[Math.floor(Math.random() * globalPool.length)] : COURSES[Math.floor(Math.random() * COURSES.length)].id;
+                    const fullName = COURSE_NAMES[randId] || `CS ${randId}`;
+                    courseData = COURSES.find(c => c.id === randId) || { id: randId, name: fullName, cat: 'E' };
                 }
             } catch (e) {
                 courseData = COURSES[Math.floor(Math.random() * COURSES.length)];
@@ -448,6 +483,8 @@
             let color = 0xffff00; // Elective/Other (Yellow)
             if (courseData.cat === 'A') color = 0x4caf50; // Green
             if (courseData.cat === 'B') color = 0x2196f3; // Blue
+            // Special color for Approved Other Dept box
+            if (courseData.id === 'XXX') color = 0x9c27b0; // Purple
             
             // Check if it's a core requirement for current track (Make it glow/distinct)
             const isCore = TRACKS[selectedTrack].core.includes(courseData.id);
@@ -525,12 +562,12 @@
         }
 
         // --- GAMEPLAY LOGIC ---
-        const keys = { w:false, a:false, s:false, d:false, ArrowUp:false, ArrowLeft:false, ArrowDown:false, ArrowRight:false, " ":false };
-        
-        window.addEventListener('keydown', (e) => { keys[e.key] = true; });
-        window.addEventListener('keyup', (e) => { keys[e.key] = false; });
+         const keys = { w:false, a:false, s:false, d:false, ArrowUp:false, ArrowLeft:false, ArrowDown:false, ArrowRight:false, " ":false };
+         
+         window.addEventListener('keydown', (e) => { keys[e.key] = true; });
+         window.addEventListener('keyup', (e) => { keys[e.key] = false; });
 
-        // Menu Logic
+         // Menu Logic
         const semesterBtns = document.querySelectorAll('.semester-btn');
         semesterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -671,13 +708,18 @@
             const catABEl = document.getElementById('cat-ab-add-count');
             if (catABEl) {
                 catABEl.innerText = `${state.catABAdditional} / 4`;
-                catABEl.className = state.catABAdditional >= 4 ? 'valid' : '';
+                catABEl.className = (state.catABAdditional >= 4 && state.catABAdditionalStrict >= 2) ? 'valid' : '';
             }
 
-            const essayThesisEl = document.getElementById('essay-thesis-count');
-            if (essayThesisEl) {
-                essayThesisEl.innerText = `${state.essayThesisCourses} / 2`;
-                essayThesisEl.className = state.essayThesisCourses >= 2 ? 'valid' : '';
+            const essayEl = document.getElementById('essay-count');
+            if (essayEl) {
+                essayEl.innerText = `${state.essayCount} / 2`;
+                essayEl.className = state.essayCount >= 2 ? 'valid' : '';
+            }
+            const thesisEl = document.getElementById('thesis-count');
+            if (thesisEl) {
+                thesisEl.innerText = `${state.thesisCount} / 2`;
+                thesisEl.className = state.thesisCount >= 2 ? 'valid' : '';
             }
 
             const flexEl = document.getElementById('flex-count');
@@ -692,7 +734,7 @@
 
             // Win Condition Check: 36 credits + all category requirements met
             if (state.credits >= 36 && state.catACore >= 2 && state.catBCore >= 2 && 
-                state.catABAdditional >= 4 && state.essayThesisCourses >= 2 && state.flexibleCourses >= 4) {
+                state.catABAdditional >= 4 && state.catABAdditionalStrict >= 2 && (state.essayCount >= 2 || state.thesisCount >= 2) && state.flexibleCourses >= 4) {
                 document.getElementById('win-screen').style.display = 'flex';
                 // Stop loop handled by logic
             }
@@ -712,6 +754,16 @@
                 showMessage(prereqMessage(data.id), false);
                 return;
             }
+
+            // Enforce degree-option restrictions
+            if (selectedDegreeOption === 'thesis' && ESSAY_COURSES.includes(data.id)) {
+                showMessage(`You selected Thesis option — cannot take Essay courses like CS ${data.id}.`, false);
+                return;
+            }
+            if (selectedDegreeOption === 'essay' && THESIS_COURSES.includes(data.id)) {
+                showMessage(`You selected Essay option — cannot take Thesis courses like CS ${data.id}.`, false);
+                return;
+            }
             
             // Logic: Cannot retake course
             if (state.collected.includes(data.id)) {
@@ -729,11 +781,56 @@
 
             // Track course by category for requirement fulfillment
             const cat = getCourseCategory(data.id);
-            if (cat === 'A' && state.catACore < 2) state.catACore++;
-            else if (cat === 'B' && state.catBCore < 2) state.catBCore++;
-            else if ((cat === 'A' || cat === 'B') && state.catABAdditional < 4) state.catABAdditional++;
-            else if (cat === 'essay' || cat === 'thesis') state.essayThesisCourses++;
-            else state.flexibleCourses++;
+            if (cat === 'A') {
+                if (state.catACore < 2) {
+                    state.catACore++;
+                } else if (state.catABAdditional < 4) {
+                    state.catABAdditional++;
+                    state.catABAdditionalStrict++;
+                } else if (state.flexibleCourses < 4) {
+                    state.flexibleCourses++;
+                }
+            } else if (cat === 'B') {
+                if (state.catBCore < 2) {
+                    state.catBCore++;
+                } else if (state.catABAdditional < 4) {
+                    state.catABAdditional++;
+                    state.catABAdditionalStrict++;
+                } else if (state.flexibleCourses < 4) {
+                    state.flexibleCourses++;
+                }
+            } else if (cat === 'essay') {
+                state.essayCount++;
+                // Essay can be used to satisfy up to 2 of the A/B additional slots
+                if (state.catABAdditional < 4 && state.essayThesisUsedForAB < 2) {
+                    state.catABAdditional++;
+                    state.essayThesisUsedForAB++;
+                } else if (state.flexibleCourses < 4) {
+                    state.flexibleCourses++;
+                }
+            } else if (cat === 'thesis') {
+                state.thesisCount++;
+                // Thesis can be used to satisfy up to 2 of the A/B additional slots
+                if (state.catABAdditional < 4 && state.essayThesisUsedForAB < 2) {
+                    state.catABAdditional++;
+                    state.essayThesisUsedForAB++;
+                } else if (state.flexibleCourses < 4) {
+                    state.flexibleCourses++;
+                }
+            } else {
+                // Flexible / other courses. Enforce independent-study limit (at most 2 of the 4)
+                if (INDEPENDENT_STUDY.includes(data.id)) {
+                    if (state.independentStudyCount < 2 && state.flexibleCourses < 4) {
+                        state.flexibleCourses++;
+                        state.independentStudyCount++;
+                    } else {
+                        // independent study doesn't count beyond limit
+                        showMessage(`Independent study limit reached; CS ${data.id} won't count toward the 4 flexible MSCS credits.`, false);
+                    }
+                } else {
+                    if (state.flexibleCourses < 4) state.flexibleCourses++;
+                }
+            }
             // Charge for the course
             state.money -= COURSE_COST;
             if (state.money < 0) state.money = 0;
