@@ -110,6 +110,9 @@
             </div>
             <div class="stat-row"><span>Category A:</span> <span id="cat-a-count">0 / 2</span></div>
             <div class="stat-row"><span>Category B:</span> <span id="cat-b-count">0 / 2</span></div>
+            <div class="stat-row"><span>A/B Additional:</span> <span id="cat-ab-add-count">0 / 4</span></div>
+            <div class="stat-row"><span>Essay/Thesis:</span> <span id="essay-thesis-count">0 / 2</span></div>
+            <div class="stat-row"><span>Flexible:</span> <span id="flex-count">0 / 4</span></div>
             <div class="stat-row"><span>Track Core:</span> <span id="track-core-count">0 / 6</span></div>
             <div class="stat-row" style="margin-top:10px; font-size:14px; color:#aaa;">Last Action: <span id="last-action">-</span></div>
             <div id="semester-tracker" class="sem-tracker">
@@ -305,6 +308,20 @@
             return `Prerequisite: ${orParts.join(' or ')} required before CS ${courseId}.`;
         }
 
+        // Course category helpers
+        const ESSAY_COURSES = ["601", "602", "604", "605"];
+        const THESIS_COURSES = ["704", "705", "706"];
+        const CAT_A_COURSES = ["501", "509", "512", "513", "514", "581"];
+        const CAT_B_COURSES = ["507", "515", "518", "519", "520", "523", "525", "526", "527", "529", "530", "534", "535", "536", "538", "545", "550", "552", "553", "558", "560", "562"];
+
+        function getCourseCategory(courseId) {
+            if (ESSAY_COURSES.includes(courseId)) return 'essay';
+            if (THESIS_COURSES.includes(courseId)) return 'thesis';
+            if (CAT_A_COURSES.includes(courseId)) return 'A';
+            if (CAT_B_COURSES.includes(courseId)) return 'B';
+            return 'flex'; // flexible/other
+        }
+
         let selectedTrack = "general";
         let selectedSemester = "spring";
         let selectedDegreeOption = "essay"; // 'essay' or 'thesis'
@@ -316,7 +333,13 @@
             catB: 0,
             trackCore: 0,
             collected: [],
-            semesterCourses: [] // array of arrays: courses picked per semester
+            semesterCourses: [], // array of arrays: courses picked per semester
+            catACore: 0, // min 2
+            catBCore: 0, // min 2
+            catABAdditional: 0, // min 4 (from A or B)
+            essayThesisCourses: 0, // essay/thesis courses picked (max 2 in first sem)
+            flexibleCourses: 0, // other courses (max 4)
+            essayThesisCompleted: false // whether essay or thesis requirement met
         };
 
         // Game constants
@@ -638,20 +661,38 @@
             }
             
             const catAEl = document.getElementById('cat-a-count');
-            catAEl.innerText = `${state.catA} / 2`;
-            catAEl.className = state.catA >= 2 ? 'valid' : '';
+            catAEl.innerText = `${state.catACore} / 2`;
+            catAEl.className = state.catACore >= 2 ? 'valid' : '';
 
             const catBEl = document.getElementById('cat-b-count');
-            catBEl.innerText = `${state.catB} / 2`;
-            catBEl.className = state.catB >= 2 ? 'valid' : '';
+            catBEl.innerText = `${state.catBCore} / 2`;
+            catBEl.className = state.catBCore >= 2 ? 'valid' : '';
+
+            const catABEl = document.getElementById('cat-ab-add-count');
+            if (catABEl) {
+                catABEl.innerText = `${state.catABAdditional} / 4`;
+                catABEl.className = state.catABAdditional >= 4 ? 'valid' : '';
+            }
+
+            const essayThesisEl = document.getElementById('essay-thesis-count');
+            if (essayThesisEl) {
+                essayThesisEl.innerText = `${state.essayThesisCourses} / 2`;
+                essayThesisEl.className = state.essayThesisCourses >= 2 ? 'valid' : '';
+            }
+
+            const flexEl = document.getElementById('flex-count');
+            if (flexEl) {
+                flexEl.innerText = `${state.flexibleCourses} / 4`;
+                flexEl.className = state.flexibleCourses >= 4 ? 'valid' : '';
+            }
 
             const coreEl = document.getElementById('track-core-count');
             coreEl.innerText = `${state.trackCore} / 6`;
-            // Note: Rutgers allows choices for the 6, so we just track quantity of valid core courses picked
             coreEl.className = state.trackCore >= 6 ? 'valid' : '';
 
-            // Win Condition Check
-            if (state.credits >= 36 && state.catA >= 2 && state.catB >= 2 && state.trackCore >= 6) {
+            // Win Condition Check: 36 credits + all category requirements met
+            if (state.credits >= 36 && state.catACore >= 2 && state.catBCore >= 2 && 
+                state.catABAdditional >= 4 && state.essayThesisCourses >= 2 && state.flexibleCourses >= 4) {
                 document.getElementById('win-screen').style.display = 'flex';
                 // Stop loop handled by logic
             }
@@ -685,6 +726,14 @@
             if (!state.semesterCourses[semIndex]) state.semesterCourses[semIndex] = [];
             const fullName = COURSE_NAMES[data.id] || data.name || `CS ${data.id}`;
             state.semesterCourses[semIndex].push({ id: data.id, name: fullName });
+
+            // Track course by category for requirement fulfillment
+            const cat = getCourseCategory(data.id);
+            if (cat === 'A' && state.catACore < 2) state.catACore++;
+            else if (cat === 'B' && state.catBCore < 2) state.catBCore++;
+            else if ((cat === 'A' || cat === 'B') && state.catABAdditional < 4) state.catABAdditional++;
+            else if (cat === 'essay' || cat === 'thesis') state.essayThesisCourses++;
+            else state.flexibleCourses++;
             // Charge for the course
             state.money -= COURSE_COST;
             if (state.money < 0) state.money = 0;
