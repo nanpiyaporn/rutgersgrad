@@ -63,7 +63,7 @@ This project is an educational gamification tool designed to help incoming Rutge
 
 - **3D Rendering:** Three.js (r128)
 - **Language:** HTML5, CSS3, JavaScript (vanilla)
-- **No Build Step:** Just open `main.html` in any modern browser
+- **No Build Step:** Just open `index.html` in any modern browser
 
 ## Course Categories
 
@@ -84,7 +84,7 @@ Seminars (671, 672), Independent Study (699), Approved Other Department courses 
 
 ## Files
 
-- `main.html` – Main game file (HTML + CSS + Three.js)
+- `index.html` – Main game file (HTML + CSS + Three.js)
 - `README.md` – This file
 - `img/` – Screenshots and GIFs
 - `CS523_Piyaporn_pp227_FinalRUGame.pdf` – Final project documentation
