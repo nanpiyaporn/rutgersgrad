@@ -47,7 +47,7 @@ Picture 4: Before the updated version
 Picture 5: You have only $1000 left after graduating 100% graduate
 
 ![Game Screenshot 8](img/rugradpiyaporn8.png)
-Picture 6: A litter error here. 100% to graduate, but you have not taken the Essay courses yet!
+Picture 6: You start at $40,000 (take it and run!)
 
 ![Game Screenshot 9](img/rugradpiyaporn9.png)
 Picture 7: Another error here. 100% to graduate!
