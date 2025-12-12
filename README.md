@@ -50,7 +50,7 @@ Picture 5: You have only $1000 left after graduating 100% graduate
 Picture 6: You start at $40,000 (take it and run!)
 
 ![Game Screenshot 9](img/rugradpiyaporn9.png)
-Picture 7: Another error here. 100% to graduate!
+Picture 7: 100% to graduate! (Hope to get a tech job after). No more cleaning service!
 
 ![Game Screenshot 10](img/rugradpiyaporn10.png)
 Picture 8: Another prerequisite!!
