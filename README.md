@@ -32,13 +32,28 @@ This project is an educational gamification tool designed to help incoming Rutge
 
 ### Screenshots
 ![Game Screenshot 1](img/rugradpiyaporn1.png)
+Picture 1:  Game over!!
+
 ![Game Screenshot 2](img/rugradpiyaporn2.png)
+Picture 2: Shows each semester's courses and how much money you have left
+
 ![Game Screenshot 3](img/rugradpiyaporn3.png)
+Picture 3: Some courses require a prerequisite
+
 ![Game Screenshot 4](img/rugradpiyaporn4.png)
+Picture 4: Before the updated version
+
 ![Game Screenshot 7](img/rugradpiyaporn7.png)
+Picture 5: You have only $1000 left after graduating 100% graduate
+
 ![Game Screenshot 8](img/rugradpiyaporn8.png)
+Picture 6: A litter error here. 100% to graduate, but you have not taken the Essay courses yet!
+
 ![Game Screenshot 9](img/rugradpiyaporn9.png)
+Picture 7: Another error here. 100% to graduate!
+
 ![Game Screenshot 10](img/rugradpiyaporn10.png)
+Picture 8: Another prerequisite!!
 
 ## How to Play
 
